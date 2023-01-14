@@ -1,0 +1,36 @@
+Here is an example of how you can use the OpenCV library to capture a video from a webcam and the pre-trained model from deepface library to perform emotion recognition on each frame:
+
+import cv2
+from deepface import DeepFace
+
+# Initialize the webcam
+cap = cv2.VideoCapture(0)
+
+# Load the pre-trained model
+deepface = DeepFace.build_model()
+
+while True:
+    # Capture a frame from the webcam
+    ret, frame = cap.read()
+
+    # Resize the frame to a smaller size
+    frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+
+    # Perform emotion recognition on the frame
+    result = deepface.analyze(frame, actions=['emotion'])
+    emotion = result['emotion']
+
+    # Display the frame with the emotion label
+    cv2.imshow("Emotion recognition", frame)
+    cv2.putText(frame, emotion, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.imshow("Emotion recognition", frame)
+
+    # Exit the program when the 'q' key is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the webcam and close the window
+cap.release()
+cv2.destroyAllWindows()
+
+
